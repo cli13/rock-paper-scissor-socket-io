@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<%- include('./partials/head'); %>
+
+<body>
+<%- include('./partials/navbar'); %>
+
+    <div class='container'>
+        <div class="mx-auto form-width">
+            <form method="post" action="/signup">
+                <h1 class="text-center">Sign Up</h1>
+                <hr>
+                <div class="form-div">
+                    <input placeholder="Username" type="text" class="form-input" name="reg_uname">
+                </div>
+                <div class="form-group">
+                    <input placeholder="Password" type="password" class="form-input" name="reg_pword">
+                </div>
+                <div class="form-group">
+                    <input placeholder="Password (again)" type="password" class="form-input" name="reg_pname_confirm">
+                </div>
+                <button class="btn btn-lg btn-success btn-block" type="submit">Sign up</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
