@@ -4,8 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
+var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
 require('dotenv').config();
-
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -13,8 +14,12 @@ var usersRouter = require('./routes/users');
 var app = express();
 
 const uri = 'mongodb+srv://' + process.env.MONGO_UNAME + ':'+ process.env.MONGO_PWORD + '@cluster0.zwtlr.mongodb.net/'+ process.env.MONGO_DB_NAME +'?retryWrites=true&w=majority';
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true})
-
+const dbconnection = mongoose.createConnection(uri, { useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true});
+const sessionStore = new MongoStore({
+  mongooseConnection: dbconnection,
+  collection: 'sessions'
+})
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -25,6 +30,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+  secret: 'TODO CHANGE', //process.env.SESSION_SECRET
+  resave: false,
+  saveUninitialized: true,
+  store: sessionStore,
+  cookie: {maxAge: 1000 * 60 * 60 * 2} // 2 hours 
+}))
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

@@ -3,6 +3,10 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+#error1{
+  color: red;
+}
+
 .navbarAnchor {
   padding: 1rem;
   color:lightgray;
@@ -39,4 +43,8 @@ a {
 .form-width{
   max-width: 500px;
   margin-top: 1rem;
+}
+
+.white-text{
+  color: white;
 }
