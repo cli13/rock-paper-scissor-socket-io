@@ -11,8 +11,6 @@ let test = 'abc';
 
 e.addEventListener('keyup', function(){
     let message = '';
-    //Spent a good hour on this trying to condence the code, but it just made stuff unresponsive
-    //I'm not sure if this is because of vanilla javascript xhr
     if(e.value.length >= 5){
         var xhr = new XMLHttpRequest();
         xhr.open('GET', `/users/${e.value}`, true);
@@ -38,7 +36,6 @@ e.addEventListener('keyup', function(){
 function check(){
     let message2 = '';
     if(p.value == p2.value){
-        message2 = '';
         passValid = true;
     }else{
         message2 = 'Password does not match';

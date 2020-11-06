@@ -7,7 +7,9 @@ var mongoose = require('mongoose');
 var flash = require('connect-flash');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
+var passport = require('passport');
 require('dotenv').config();
+require('./config/passport')(passport);
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -39,10 +41,14 @@ app.use(session({
   cookie: {maxAge: 1000 * 60 * 60 * 2} // 2 hours 
 }))
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(flash());
 
 app.use(function(req,res,next){
   res.locals.success_msg = req.flash('success_msg');
+  res.locals.error = req.flash('error');
   next();
 })
 

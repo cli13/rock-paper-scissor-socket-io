@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+var mongoose = require('mongoose');
+var bcrypt = require('bcrypt');
+var passport = require('passport');
 
-const User = require('../models/user');
+var User = require('../models/user');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -12,7 +13,7 @@ router.get('/', function(req, res, next) {
   }else{
     req.session.viewcount = 1;
   }
-  res.render('index', {viewCount: req.session.viewcount} );
+  res.render('index', {viewCount: req.session.viewcount, user: req.user} );
 });
 
 router.get('/login', function(req, res, next) {
@@ -63,6 +64,16 @@ router.post('/signup', function(req, res, next) {
     })
   }
 })
+
+router.post('/login', function(req, res, next){
+  console.log(req.body.uname);
+  console.log(req.body.pname);
+  passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/login',
+    failureFlash: true
+  })(req, res, next);
+});
 
 
 module.exports = router;
