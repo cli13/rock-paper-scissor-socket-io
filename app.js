@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
+var flash = require('connect-flash');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 require('dotenv').config();
@@ -27,7 +28,7 @@ app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
@@ -37,6 +38,13 @@ app.use(session({
   store: sessionStore,
   cookie: {maxAge: 1000 * 60 * 60 * 2} // 2 hours 
 }))
+
+app.use(flash());
+
+app.use(function(req,res,next){
+  res.locals.success_msg = req.flash('success_msg');
+  next();
+})
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

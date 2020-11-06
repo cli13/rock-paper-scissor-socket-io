@@ -7,7 +7,6 @@ const User = require('../models/user');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.cookie('test' , 'abc' , { maxAge: 50000, httpOnly: true })
   if(req.session.viewcount){
     req.session.viewcount += 1;
   }else{
@@ -54,8 +53,9 @@ router.post('/signup', function(req, res, next) {
         bcrypt.genSalt(10, function(err, salt) {
           bcrypt.hash(newUser.password, salt, function(err, hash) {
             newUser.password = hash;
-            newUser.save().then(() =>{
-              res.redirect('/');
+            newUser.save().then(user => {
+              req.flash('success_msg','You are now registered and can log in');
+              res.redirect('/login');
             })
           });
       });
