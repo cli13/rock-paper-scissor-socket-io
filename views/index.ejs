@@ -1,11 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang='en'>
   <%- include('./partials/head') %>
 <body>
   <%- include('./partials/navbar.ejs'); %>
 
+  <%- include('./partials/messages.ejs'); %>
+
   <h1>Placeholder</h1>
   <p>Viewcount <%= viewCount %> </p>
+
+    <form action='/game' method="POST">
+      <select id="game" name="game">
+        <option value="rps">Rock Paper Scissor</option>
+        <option value="ttt">Tic-tac-toe</option>
+      </select>
+      <input type="submit" value="">
+    </form>
+
 </body>
 
 </html>

@@ -8,13 +8,15 @@ var flash = require('connect-flash');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var passport = require('passport');
+var socketio = require('socket.io');
+var http = require('http');
+var sharedsession = require("express-socket.io-session");
 require('dotenv').config();
 require('./config/passport')(passport);
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
 var app = express();
+var server = http.createServer(app);
+var io = socketio(server);
 
 const uri = 'mongodb+srv://' + process.env.MONGO_UNAME + ':'+ process.env.MONGO_PWORD + '@cluster0.zwtlr.mongodb.net/'+ process.env.MONGO_DB_NAME +'?retryWrites=true&w=majority';
 const dbconnection = mongoose.createConnection(uri, { useNewUrlParser: true, useUnifiedTopology: true})
@@ -24,27 +26,34 @@ const sessionStore = new MongoStore({
   collection: 'sessions'
 })
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+var sessionMiddleware  = session({
+  secret: 'TODO CHANGE', //process.env.SESSION_SECRET
+  resave: false,
+  saveUninitialized: true,
+  store: sessionStore,
+  cookie: {maxAge: 1000 * 60 * 60 * 2} // 2 hours 
+});
+
+io.use(sharedsession(sessionMiddleware,{autoSave: true}));
+
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/users');
+var gameRouter = require('./routes/game')(io);
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({
-  secret: 'TODO CHANGE', //process.env.SESSION_SECRET
-  resave: false,
-  saveUninitialized: true,
-  store: sessionStore,
-  cookie: {maxAge: 1000 * 60 * 60 * 2} // 2 hours 
-}))
-
+app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(flash());
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 
 app.use(function(req,res,next){
   res.locals.success_msg = req.flash('success_msg');
@@ -54,6 +63,7 @@ app.use(function(req,res,next){
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/game', gameRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -71,4 +81,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+module.exports = {app, server};

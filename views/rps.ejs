@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('./partials/head') %>
+  <script>
+    var username = <%- JSON.stringify(user.username) %>
+  </script>
+  <body>
+    <%- include('./partials/navbar.ejs'); %>
+    <div class="container overflow-hidden">
+      <div class="grid-container">
+        <div class="chat-box">
+          <div class="chat-heading">
+            <span>Chat room</span>
+          </div>
+          <div class="chat-content">
+            <ul class="chat-message"></ul>
+          </div>
+          <form id="input-form-chat">
+            <div class="input-group mb-3 chat-input">
+              <input
+                type="text"
+                class="form-control"
+                id="msg"
+                autocomplete="off"
+                placeholder="Your message here"
+                aria-describedby="basic-addon2"
+              />
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit">
+                  Button
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="chat"></div>
+        <div class="content">
+          content
+          <div class="input">
+            <button>a</button>
+            <button>b</button>
+            <button>c</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="../javascripts/rps.js"></script>
+  </body>
+</html>

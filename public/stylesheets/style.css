@@ -48,3 +48,56 @@ a {
 .white-text{
   color: white;
 }
+
+.chat-box{
+  grid-area: chat;
+  margin-top: 2vmin;
+  justify-content: stretch;
+  min-height: 15em;
+}
+
+.chat-heading{
+  flex: 0 0 auto;
+  display: flex;
+}
+
+.chat-content{
+  background: #fff;
+  height: 80%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.chat-message{
+  min-height: 50vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  cursor: initial;
+  font-size: .9em;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  list-style: none;
+  padding-inline-start: 0%;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: 1fr;
+  gap: 0px 0px;
+  grid-template-areas:
+    "chat content";
+  height: 100vh;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 2fr 1fr;
+  gap: 0px 0px;
+  grid-template-areas:
+    "."
+    "rps-input";
+  grid-area: content;
+}
+.rps-input { grid-area: rps-input; }

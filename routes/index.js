@@ -65,15 +65,20 @@ router.post('/signup', function(req, res, next) {
   }
 })
 
-router.post('/login', function(req, res, next){
-  console.log(req.body.uname);
-  console.log(req.body.pname);
-  passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/login',
-    failureFlash: true
-  })(req, res, next);
+var loginAuth = passport.authenticate('local', {
+  successRedirect: '/',
+  failureRedirect: '/login',
+  failureFlash: true
+})
+
+router.post('/login', loginAuth, function(req, res, next){
 });
+
+router.post('/logout', function(req, res, next){
+  req.logout();
+  req.flash('success_msg', 'Logged out success');
+  res.redirect('/login');
+})
 
 
 module.exports = router;
