@@ -7,16 +7,29 @@
   <%- include('./partials/messages.ejs'); %>
 
   <h1>Placeholder</h1>
-  <p>Viewcount <%= viewCount %> </p>
 
-    <form action='/game' method="POST">
+    <form action='/game/create' method="POST">
       <select id="game" name="game">
         <option value="rps">Rock Paper Scissor</option>
         <option value="ttt">Tic-tac-toe</option>
       </select>
-      <input type="submit" value="">
+      <input type="submit" value="create room">
     </form>
-
+  
+    
+    <%= roomlist %>
+  <div class = row>
+    <% for(var i = 0; i < roomlist.length;i++) { %>
+    <div class="card" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title"><%= roomlist[i].game %></h5>
+        <p class="card-text">player 1: <%= roomlist[i].player1 %> </p>
+        <p class="card-text">player 2: <%= roomlist[i].player2 %> </p>
+        <a href="/game?game=<%=roomlist[i].game%>&id=<%=roomlist[i].roomID%>" class="card-link">Join Game</a>
+      </div>
+    </div>
+  <% } %>
+  </div>
+    
 </body>
-
 </html>

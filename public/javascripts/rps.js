@@ -1,10 +1,17 @@
 const socket = io();
 
 const params = new URLSearchParams(window.location.search);
+const roomGame = params.get('game');
 const roomID = params.get('id');
 
+var roomdata = {roomID: roomID, username: username, game: roomGame};
+
 socket.on('connect', function(){
-    socket.emit('joinRoom', roomID);
+    socket.emit('joinRoom', roomdata);
+})
+
+socket.on('redirect', function(data){
+    window.location.href = data;
 })
 
 const chatDiv =  document.querySelector('.chat-content');
@@ -16,9 +23,7 @@ socket.on('message', function(data) {
     messageInput.value = '';
 });
 
-socket.on('disconnect', function(){
-    socket.disconnect();
-});
+
 
 let form = document.getElementById('input-form-chat');
 
