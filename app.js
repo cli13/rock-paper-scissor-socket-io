@@ -25,9 +25,10 @@ const sessionStore = new MongoStore({
   mongooseConnection: dbconnection,
   collection: 'sessions'
 })
+mongoose.set('useCreateIndex', true);
 
 var sessionMiddleware  = session({
-  secret: 'TODO CHANGE', //process.env.SESSION_SECRET
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
   store: sessionStore,

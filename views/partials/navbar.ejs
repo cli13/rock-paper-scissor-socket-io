@@ -1,12 +1,12 @@
-<navbar class="navbar navbar-dark bg-dark">
+<navbar class="navbar navbar-dark bg-dark mb-4">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/">Brand</a>
+        <a class="navbar-brand" href="/">RPS Online</a>
         <ul class="nav nav-bar navbar-right">
             <% if(typeof user === 'undefined'){ %> 
             <li><a class="navbarAnchor" href="login">Login</a></li>
             <li><a class="navbarAnchor" href="/signup">Sign Up</a></li>
             <%} else { %>
-            <li><div class='white-text'>Hello, <%=user.username%></div></li>
+            <li><div class='white-text'><a href="/dashboard">Hello, <%=user.username%></a></div></li>
             <li><a class="navbarAnchor" href="#" onclick="logout()">Logout</a></li>
             <% }%>
         </ul>

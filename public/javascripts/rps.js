@@ -61,8 +61,12 @@ socket.on('displayResult', function(data){
     if(results.length == 2){
         let d = evalWinner(results);
         let p = document.createElement('P');
-        p.appendChild(document.createTextNode(d));
+        let p2 = document.createElement('P');
+        p.appendChild(document.createTextNode(d[0]));
+        p2.appendChild(document.createTextNode(d[1]));
+        p2.classList.add('font-weight-bold');
         gameOutput.appendChild(p);
+        gameOutput.appendChild(p2);
         let b = document.createElement('BUTTON');
         b.appendChild(document.createTextNode('Play again?'));
         b.setAttribute('onclick', 'playAgain()');
@@ -90,22 +94,21 @@ socket.on('clearOutput', function(data){
 })
 
 function evalWinner(data){
-    let str = `${data[0].username} picked ${data[0].input} and ${data[1].username} picked ${data[1].input}`
+    let str = `${data[0].username} picked ${data[0].input} and ${data[1].username} picked ${data[1].input}.`
+    let winner;
+    let loser;
     if(data[0].input === data[1].input){
-        return str + ' Its a tie';
-    }else if(data[0].input === 'rock' && data[1].input === 'scissor'){
-        return str + ` ${data[0].username} is the winner`;
-    }else if(data[0].input === 'paper' && data[1].input === 'rock'){
-        return str + ` ${data[0].username} is the winner`;
-    }else if(data[0].input === 'scissor' && data[1].input === 'paper'){
-        return str + ` ${data[0].username} is the winner`;
-    }else if(data[1].input === 'rock' && data[0].input === 'scissor'){
-        return str + ` ${data[1].username} is the winner`;
-    }else if(data[1].input === 'paper' && data[0].input === 'rock'){
-        return str + ` ${data[1].username} is the winner`;
-    }else if(data[1].input === 'scissor' && data[0].input === 'paper'){
-        return str + ` ${data[1].username} is the winner`;
+        // socket.emit("saveResult", {winner: data[0].username, loser: data[1].username, tie: true});
+        return [str, 'Its a tie'];
+    }else if((data[0].input === 'rock' && data[1].input === 'scissor') || (data[0].input === 'paper' && data[1].input === 'rock') || (data[0].input === 'scissor' && data[1].input === 'paper')){
+        winner = data[0].username;
+        loser = data[1].username;
+    }else if((data[1].input === 'rock' && data[0].input === 'scissor') || (data[1].input === 'paper' && data[0].input === 'rock') || (data[1].input === 'scissor' && data[0].input === 'paper')){
+        winner = data[1].username
+        loser = data[0].username;
     }
+    // socket.emit("saveResult", {winner: winner, loser: loser});
+    return [str , `${winner} is the winner.`];
 }
 
 const chatDiv =  document.querySelector('.chat-content');

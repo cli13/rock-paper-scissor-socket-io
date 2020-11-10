@@ -3,7 +3,9 @@ var router = express.Router();
 var bcrypt = require('bcrypt');
 var passport = require('passport');
 
+const auth = require('../config/auth');
 const User = require('../models/user');
+const Result = require('../models/result')
 
 /* GET users listing. */
 router.get('users/:username', function(req, res, next) {
@@ -85,5 +87,12 @@ router.post('/logout', function(req, res, next){
   req.flash('success_msg', 'Logged out success');
   res.redirect('/login');
 })
+
+// router.get('/dashboard',auth.ensureAuthenticated, function(req,res, next){
+//   Result.find({ $or: [{'winner': req.session.username}, {'loser': req.session.username}]})
+//     .then(function(result){
+//       res.send(result);
+//   })
+// })
 
 module.exports = router;

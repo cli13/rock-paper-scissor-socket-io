@@ -4,32 +4,41 @@
 <body>
   <%- include('./partials/navbar.ejs'); %>
 
+
+<div class='container'>
   <%- include('./partials/messages.ejs'); %>
-
-  <h1>Placeholder</h1>
-
-    <form action='/game/create' method="POST">
-      <select id="game" name="game">
-        <option value="rps">Rock Paper Scissor</option>
-        <option value="ttt">Tic-tac-toe</option>
-      </select>
-      <input type="submit" value="create room">
-    </form>
-  
-    
-    <%= roomlist %>
-  <div class = row>
-    <% for(var i = 0; i < roomlist.length;i++) { %>
-    <div class="card" style="width: 18rem;">
-      <div class="card-body">
-        <h5 class="card-title"><%= roomlist[i].game %></h5>
-        <p class="card-text">player 1: <%= roomlist[i].player1 %> </p>
-        <p class="card-text">player 2: <%= roomlist[i].player2 %> </p>
-        <a href="/game?game=<%=roomlist[i].game%>&id=<%=roomlist[i].roomID%>" class="card-link">Join Game</a>
-      </div>
-    </div>
-  <% } %>
+  <div class="jumbotron mt-4">
+    <h1 class="display-4">Welcome to Rock Paper Scissors Online</h1>
+    <p class="lead">This is a simple website for people across the world to play rock paper and scissors on the internet!</p>
+    <hr class="my-4">
+    <p>To play the game you must register an account. Afterwards you can either join a room listed below or if there are not any rooms available just create one with the button below! </p>
+      <form action='/game/create' method="POST">
+        <input type="text" name="game" value="rps" hidden>
+        <input class="btn btn-primary" type="submit" value="Create room" >
+      </form>
+    </p>
   </div>
-    
+    <h1 class="text-center">Room List</h1>
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Room ID</th>
+          <th scope="col">Player 1</th>
+          <th scope="col">Player 2</th>
+          <th scope="col">Link</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(var i = 0; i < roomlist.length;i++) { %>
+        <tr>
+          <th scope="row"><%= roomlist[i].roomID %></th>
+          <% if(roomlist[i].player1 == null){ %><td class="text-muted font-italic"> /empty/ </td> <%} else{ %> <td><%=roomlist[i].player1 %> <%}%> </td>
+          <% if(roomlist[i].player2 == null){ %><td class="text-muted font-italic"> /empty/ </td> <%} else{ %> <td><%=roomlist[i].player2 %> <%}%> </td>
+          <td><a href="/game?game=<%=roomlist[i].game%>&id=<%=roomlist[i].roomID%>" class="btn btn-primary">Join Game</a></td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+</div>
 </body>
 </html>

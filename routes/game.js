@@ -4,6 +4,7 @@ const router = express.Router();
 
 var auth = require('../config/auth');
 const Room = require('../models/room');
+const Result = require('../models/result');
 
 var uniqueID = 0;
 //keep track of number of players in room
@@ -38,7 +39,8 @@ module.exports = function (io) {
                             console.log("refresh");
                         }
                         else if(result.player1 != null && result.player2 != null){
-                            var str = encodeURIComponent=('room is full')
+                            var str = encodeURIComponent=('Room is full please join another room')
+                            io.to(socket.room).emit('message', {user: data.username, message: `${data.username} tried to join, but room was full`})
                             socket.emit('redirect', `/?error=${str}`)
                         }else if(result.player1 == null){
                             socket.handshake.session.room = data.roomID;
@@ -62,7 +64,7 @@ module.exports = function (io) {
                     console.log("error at create room\n" + err);
                 })
             if(numClients[socket.room] <= 2){
-                io.to(socket.room).emit('message', {user: 'server', message: `${socket.handshake.session.username} has joined the chat`})
+                io.to(socket.room).emit('message', {user: 'server', message: `${socket.handshake.session.username} has joined the room`})
             }
             if(numClients[socket.room] == 2){
                 io.to(socket.room).emit('gameReady', true);
@@ -95,10 +97,21 @@ module.exports = function (io) {
             io.to(socket.room).emit('gameReady', data);
         })
 
+        // socket.on('saveResult', function(data){
+        //     const newResult = new Result({
+        //         winner: data.winner,
+        //         loser: data.loser,
+        //         game: 'Rock Paper Scissor'
+        //     })
+        //     newResult.save();
+        // })
+
         socket.on('disconnect', function(){
             let user = socket.handshake.session.username;
+            if(numClients <= 2){
+                io.to(socket.room).emit('clearOutput', false);
+            }
             numClients[socket.room]--;
-            io.to(socket.room).emit('clearOutput', false);
             io.to(socket.room).emit('message', {user: 'server', message: `${user} has left the room`});
             Room.findOne({roomID: socket.room})
                 .then(function(result){
