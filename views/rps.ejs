@@ -2,17 +2,17 @@
 <html lang="en">
   <%- include('./partials/head') %>
   <script>
-    var username = <%- JSON.stringify(user.username) %>
+    var username = <%- JSON.stringify(user.username) %>;
   </script>
-  <body>
+  <body class="overflow-hidden">
     <%- include('./partials/navbar.ejs'); %>
-    <div class="container overflow-hidden">
+    <div class="container">
       <div class="grid-container">
         <div class="chat-box">
           <div class="chat-heading">
             <span>Chat room</span>
           </div>
-          <div class="chat-content">
+          <div class="chat-content overflow-hidden">
             <ul class="chat-message"></ul>
           </div>
           <form id="input-form-chat">
@@ -27,19 +27,24 @@
               />
               <div class="input-group-append">
                 <button class="btn btn-outline-secondary" type="submit">
-                  Button
+                  <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-chat-square-dots" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M14 1H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h2.5a2 2 0 0 1 1.6.8L8 14.333 9.9 11.8a2 2 0 0 1 1.6-.8H14a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                    <path d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                  </svg>
                 </button>
               </div>
             </div>
           </form>
         </div>
         <div class="chat"></div>
-        <div class="content">
-          content
-          <div class="input">
-            <button>rock</button>
-            <button>paper</button>
-            <button>scissor</button>
+        <div class="content mt-3 text-center">
+          <div id='gameOutput'>
+            <p id="gameState" class="font-weight-bold" style="color:red">Waiting for more players to join...</p>
+          </div>
+          <div class="btn-group h-50" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-primary" disabled onclick='sendInput("rock")'>Rock</button>
+            <button type="button" class="btn btn-primary" disabled onclick='sendInput("paper")'>Paper</button>
+            <button type="button" class="btn btn-primary" disabled onclick='sendInput("scissor")'>Scissor</button>
           </div>
         </div>
       </div>

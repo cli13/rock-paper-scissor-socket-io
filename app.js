@@ -38,7 +38,6 @@ io.use(sharedsession(sessionMiddleware,{autoSave: true}));
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var roomsRouter = require('./routes/rooms');
 var gameRouter = require('./routes/game')(io);
 
 app.use(logger('dev'));
@@ -65,7 +64,6 @@ app.use(function(req,res,next){
 app.use('/', indexRouter);
 app.use('/', usersRouter);
 app.use('/game', gameRouter);
-app.use('/room', roomsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

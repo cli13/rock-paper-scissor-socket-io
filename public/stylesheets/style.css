@@ -63,7 +63,7 @@ a {
 
 .chat-content{
   background: #fff;
-  height: 80%;
+  height: 75%;
   overflow-y: scroll;
   overflow-x: hidden;
 }
