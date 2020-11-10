@@ -1,5 +1,4 @@
-# simple-online-games (WIP)
+# Rock Paper Scissors Online
 
-Simple Project trying to add simple online game like tic tac toe, rock paper scissors, and other basic games.
-
-Goal of project get a better grasp of web development using mongodb and web sockets.
+Simple rock paper scissor website with the goal of learning passport auth, mongodb, and socket-io.
+You can play the game online [here.](https://rps-on-line.herokuapp.com/)
