@@ -28,7 +28,7 @@ const sessionStore = new MongoStore({
 mongoose.set('useCreateIndex', true);
 
 var sessionMiddleware  = session({
-  secret: process.env.SESSION_SECRET,
+  secret: SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
   store: sessionStore,
